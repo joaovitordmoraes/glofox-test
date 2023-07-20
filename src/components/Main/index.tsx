@@ -1,3 +1,5 @@
+import * as S from './styles'
+
 export function Main() {
-  return <main><h1>Hello World</h1></main>
+  return <main><S.Heading>Hello World</S.Heading></main>
 }
