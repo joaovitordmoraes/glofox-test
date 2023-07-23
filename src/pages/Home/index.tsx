@@ -77,7 +77,7 @@ export function Home() {
   const [searchCategory, setSearchCategory] = useState('beer_name')
   const [search, setSearch] = useState('')
   const [beers, setBeers] = useState<BeerResponseProps[]>([])
-  const [itemsPerPage, setItemsPerPage] = useState(25)
+  const [itemsPerPage, setItemsPerPage] = useState(20)
   const { setBeer } = useContext(BeersContext)
   const navigate = useNavigate()
 
@@ -98,7 +98,9 @@ export function Home() {
   }, [search, searchCategory, itemsPerPage])
 
   function UpdateItemsPerPage() {
-    setItemsPerPage(itemsPerPage + 25)
+    if (itemsPerPage < 80) {
+      setItemsPerPage(itemsPerPage + 20)
+    }
   }
 
   const beerFilterOptions = [
@@ -158,12 +160,14 @@ export function Home() {
           </S.ProductGrid>
           </Col>
         </Row>
-        <Row>
-          <Col span={24}>
-            <Divider />
-            <Button onClick={UpdateItemsPerPage} block>Load more beer options</Button>
-          </Col>
-        </Row>
+        {itemsPerPage < 80 && (
+          <Row>
+            <Col span={24}>
+              <Divider />
+              <Button onClick={UpdateItemsPerPage} block>Load more beer options</Button>
+            </Col>
+          </Row>
+        )}
       </S.Container>
     </S.Main>
   )
