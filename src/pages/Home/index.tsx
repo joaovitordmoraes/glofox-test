@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Divider, Input, Col, Row, Radio } from 'antd'
+import { Divider, Input, Col, Row, Radio, Button } from 'antd'
 import { BeersContext } from 'contexts/BeersContext'
 import { ProductCard } from 'components/ProductCard'
 
@@ -77,6 +77,7 @@ export function Home() {
   const [searchCategory, setSearchCategory] = useState('beer_name')
   const [search, setSearch] = useState('')
   const [beers, setBeers] = useState<BeerResponseProps[]>([])
+  const [itemsPerPage, setItemsPerPage] = useState(25)
   const { setBeer } = useContext(BeersContext)
   const navigate = useNavigate()
 
@@ -85,7 +86,7 @@ export function Home() {
 
   useEffect(() => {
     const getBeers = async () => {
-      const populateReq = search !== '' ? `?${searchCategory}=${search}` : ''
+      const populateReq = search !== '' ? `?${searchCategory}=${search}&per_page=${itemsPerPage}` : `?per_page=${itemsPerPage}`
 
       const response = await fetch(`https://api.punkapi.com/v2/beers${populateReq}`);
       const beers = await response.json();
@@ -94,7 +95,11 @@ export function Home() {
     }
 
     getBeers()
-  }, [search, searchCategory])
+  }, [search, searchCategory, itemsPerPage])
+
+  function UpdateItemsPerPage() {
+    setItemsPerPage(itemsPerPage + 25)
+  }
 
   const beerFilterOptions = [
     { label: 'Name', value: 'beer_name' },
@@ -151,6 +156,12 @@ export function Home() {
               )
             })}
           </S.ProductGrid>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Divider />
+            <Button onClick={UpdateItemsPerPage} block>Load more beer options</Button>
           </Col>
         </Row>
       </S.Container>
