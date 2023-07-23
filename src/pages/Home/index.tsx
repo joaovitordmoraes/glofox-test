@@ -134,7 +134,8 @@ export function Home() {
                   tagline: beer.tagline,
                   description: beer.description,
                   image: beer.image_url,
-                  food_pairing: beer.food_pairing
+                  food_pairing: beer.food_pairing,
+                  ingredients: beer.ingredients
                 })
                 navigate(`/beer/${slug}`)
               }

@@ -6,6 +6,23 @@ export type BeerResponseProps = {
   image: string
   description: string,
   food_pairing: string[]
+  ingredients: {
+    malt: {
+      name: string
+      amount: {
+        value: number,
+        unit: string
+      }
+    }[]
+    hops: {
+      name: string
+      amount: {
+        value: number,
+        unit: string
+      }
+    }[]
+    yeast: string
+  }
 }
 
 type BeersContextData = {
@@ -20,14 +37,37 @@ type BeersContextProviderProps = {
   children: React.ReactNode
 }
 
+const initialBeerObj = {
+  name: '',
+  tagline: '',
+  description: '',
+  image: '',
+  food_pairing: [''],
+  ingredients: {
+    malt: [
+      {
+        name: '',
+        amount: {
+          value: 0,
+          unit: ''
+        },
+      }
+    ],
+    hops: [
+      {
+        name: '',
+        amount: {
+          value: 0,
+          unit: ''
+        },
+      }
+    ],
+    yeast: ''
+  }
+}
+
 export function BeersContextProvider({ children }: BeersContextProviderProps) {
-  const [beer, setBeer] = useState<BeerResponseProps>({
-    name: '',
-    tagline: '',
-    description: '',
-    image: '',
-    food_pairing: ['']
-  })
+  const [beer, setBeer] = useState<BeerResponseProps>(initialBeerObj)
 
   const updateBeer = useCallback((newBeer: BeerResponseProps) => {
     setBeer(newBeer);
